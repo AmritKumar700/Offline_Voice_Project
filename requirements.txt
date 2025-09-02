@@ -1,0 +1,18 @@
+# Core
+fastapi
+uvicorn[standard]
+python-dotenv
+
+# AI & ML
+ollama
+
+requests
+beautifulsoup4
+playwright
+ddgs
+PyMuPDF
+sounddevice
+pyttsx3
+whisper-cpp-python
+openwakeword
+onnxruntime 

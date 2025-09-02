@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f0f2f5; margin: 0; padding: 2rem; }
+        .container { max-width: 700px; margin: auto; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        #commandInput { width: calc(100% - 22px); padding: 10px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 1rem; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:disabled { background-color: #aaa; }
+        #responseArea { margin-top: 1.5rem; background: #e9ecef; padding: 1rem; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Agent Dashboard</h1>
+        <input type="text" id="commandInput" placeholder="Type your command here...">
+        <button id="submitButton" onclick="sendCommand()">Execute Command</button>
+        <div id="responseArea">Agent's response will appear here...</div>
+    </div>
+
+    <script>
+        const commandInput = document.getElementById('commandInput');
+        const submitButton = document.getElementById('submitButton');
+        const responseArea = document.getElementById('responseArea');
+
+        async function sendCommand() {
+            const command = commandInput.value;
+            if (!command) return;
+
+            // Disable button and show loading message
+            submitButton.disabled = true;
+            submitButton.innerText = "Processing...";
+            responseArea.innerText = "Agent is thinking...";
+
+            try {
+                const response = await fetch('/execute_command', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command: command })
+                });
+
+                const data = await response.json();
+                responseArea.innerText = data.result;
+
+            } catch (error) {
+                responseArea.innerText = 'Error: Could not connect to the agent server. ' + error;
+            } finally {
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.innerText = "Execute Command";
+            }
+        }
+
+        // Allow pressing Enter to submit
+        commandInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevent form submission
+                sendCommand();
+            }
+        });
+    </script>
+</body>
+</html>
