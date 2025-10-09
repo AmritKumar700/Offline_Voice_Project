@@ -1,0 +1,13 @@
+# Virtual Environment
+venv/
+
+# Large Model Files
+ggml-base.en.bin
+offline_models/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS specific
+.DS_Store
